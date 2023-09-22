@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<style>
+  .remove-line{
+    text-decoration: none;
+    color: white;
+  }
+</style>
+<body>
+  <div>
+    <button class="add-product-btn">
+      <a href="/add-blog" class="remove-line">
+      Add Blog
+
+    </a></button>
+    <div class="table">
+
+      <div class="row header blue">
+        <div class="cell">ID</div>
+        <div class="cell">Title</div>
+        <div class="cell">Content</div>
+        <div class="cell">Actions</div> <!-- New column for Actions -->
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+
+  <!-- <script>
+    // Function to fetch and populate data
+    async function fetchData() {
+      try {
+        const response = await fetch('/blog/get-all');
+        const data = await response.json();
+        const blogs = data.blogs;
+
+        // Get the table container
+        const table = document.querySelector('.table');
+
+        // Iterate through the blogs and create rows
+        blogs.forEach(blog => {
+          const row = document.createElement('div');
+          row.className = 'row';
+
+          // Create cells for ID, Title, and Content
+          const idCell = document.createElement('div');
+          idCell.className = 'cell';
+          idCell.textContent = blog.id;
+
+          const titleCell = document.createElement('div');
+          titleCell.className = 'cell';
+          titleCell.textContent = blog.title;
+
+          const contentCell = document.createElement('div');
+          contentCell.className = 'cell';
+          contentCell.textContent = blog.content;
+
+          // Create cell for Actions
+          const actionsCell = document.createElement('div');
+          actionsCell.className = 'cell';
+
+          // Create Update button
+          const updateButton = document.createElement('button');
+          updateButton.className = 'update-btn';
+          updateButton.textContent = 'Update';
+
+          // Set a data-id attribute with the ID value
+          updateButton.setAttribute('data-id', blog.id);
+
+          // Add a click event listener to the Update button
+          updateButton.addEventListener('click', () => {
+            // Get the blog ID from the row's ID cell (assuming the ID is stored in the first cell)
+            const blogId = idCell.textContent;
+
+            // Redirect to the update_blog.html page with the blog ID in the query parameter
+            window.location.href = `/update-blog?id=${blogId}`;
+          });
+          // Create Delete button
+          const deleteButton = document.createElement('button');
+          deleteButton.className = 'delete-btn';
+          deleteButton.textContent = 'Delete';
+
+          // Append buttons to the Actions cell
+          actionsCell.appendChild(updateButton);
+          actionsCell.appendChild(deleteButton);
+
+
+          // Append cells to the row
+          row.appendChild(idCell);
+          row.appendChild(titleCell);
+          row.appendChild(contentCell);
+          row.appendChild(actionsCell); // Append the Actions cell
+
+          // Append the row to the table
+          table.appendChild(row);
+        });
+      }
+      catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    // Call the fetchData function to populate the table
+    fetchData();
+  </script> -->
+
+<!-- ... (previous code) ... -->
+
+<script>
+  // Function to fetch and populate data
+  async function fetchData() {
+    try {
+      const response = await fetch('/blog/get-all');
+      const data = await response.json();
+      const blogs = data.blogs;
+
+      // Get the table container
+      const table = document.querySelector('.table');
+
+      // Iterate through the blogs and create rows
+      blogs.forEach(blog => {
+        const row = document.createElement('div');
+        row.className = 'row';
+
+        // Create cells for ID, Title, and Content
+        const idCell = document.createElement('div');
+        idCell.className = 'cell';
+        idCell.textContent = blog.id;
+
+        const titleCell = document.createElement('div');
+        titleCell.className = 'cell';
+        titleCell.textContent = blog.title;
+
+        const contentCell = document.createElement('div');
+        contentCell.className = 'cell';
+        contentCell.textContent = blog.content;
+
+        // Create cell for Actions
+        const actionsCell = document.createElement('div');
+        actionsCell.className = 'cell';
+
+        // Create Update button
+        const updateButton = document.createElement('button');
+        updateButton.className = 'update-btn';
+        updateButton.textContent = 'Update';
+
+        // Set a data-id attribute with the ID value
+        updateButton.setAttribute('data-id', blog.id);
+
+        // Add a click event listener to the Update button
+        updateButton.addEventListener('click', () => {
+          // Get the blog ID from the row's ID cell (assuming the ID is stored in the first cell)
+          const blogId = idCell.textContent;
+
+          // Redirect to the update_blog.html page with the blog ID in the query parameter
+          window.location.href = `/update-blog?id=${blogId}`;
+        });
+
+        // Create Delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-btn';
+        deleteButton.textContent = 'Delete';
+
+        // Set a data-id attribute with the ID value
+        deleteButton.setAttribute('data-id', blog.id);
+
+        // Add a click event listener to the Delete button
+        deleteButton.addEventListener('click', () => {
+          // Get the blog ID from the row's ID cell (assuming the ID is stored in the first cell)
+          const blogId = idCell.textContent;
+
+          // Make an HTTP DELETE request to the delete API endpoint with the blog ID
+          fetch(`/blog/delete/${blogId}`, {
+            method: 'DELETE',
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Handle success (e.g., remove the row from the table)
+                row.remove();
+                alert(data.success);
+              } else {
+                alert(data.error);
+              }
+            })
+            .catch(error => {
+              console.error('Error deleting blog:', error);
+            });
+        });
+
+        // Append buttons to the Actions cell
+        actionsCell.appendChild(updateButton);
+        actionsCell.appendChild(deleteButton);
+
+        // Append cells to the row
+        row.appendChild(idCell);
+        row.appendChild(titleCell);
+        row.appendChild(contentCell);
+        row.appendChild(actionsCell); // Append the Actions cell
+
+        // Append the row to the table
+        table.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  // Call the fetchData function to populate the table
+  fetchData();
+</script>
+
+<!-- ... (remaining code) ... -->
+
+
+
+</body>
+
+</html>
+</body>
+
+</html>
